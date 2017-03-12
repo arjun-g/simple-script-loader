@@ -53,9 +53,9 @@
                 script.onerror = function(){
                     reject()
                 }
-                script.src = scriptConfig.path
+                script.src = scriptConfig.path || scriptConfig
                 script.async = !!scriptConfig.async
-                script.send()
+                document.head.appendChild(script)
             })
         }
 
