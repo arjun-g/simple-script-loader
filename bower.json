@@ -1,0 +1,21 @@
+{
+  "name": "simple-script-loader",
+  "homepage": "https://github.com/arjun-g/simple-script-loader",
+  "description": "Load multiple script synchronously and asynchronously",
+  "main": "src/simple-script-loader.js",
+  "keywords": [
+    "script",
+    "load"
+  ],
+  "authors": [
+    "Arjun G"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
