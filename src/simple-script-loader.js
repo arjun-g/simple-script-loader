@@ -7,17 +7,18 @@
                 this.config = configOrPath
             else
                 this.configPath = configOrPath
+            this.loadCount = 0
         }
 
-        load(){
+        load(loaded){
             return new Promise((resolve, reject) => {
-                let loadCount = 0
                 this.loadConfig()
                 .then(config => {
                     config.scripts.forEach(script => {
                         this.downloadScript(script).then(() => {
-                            loadCount++
-                            if(loadCount === config.scripts.length) resolve()
+                            this.loadCount++
+                            if(loaded) loaded(this.loadCount, config.scripts.length)
+                            if(this.loadCount === config.scripts.length) resolve()
                         })
                     })
                 })
