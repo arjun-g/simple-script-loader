@@ -1,4 +1,4 @@
-(function(){
+(function(window){
 
     class LoadScript{
 
@@ -61,4 +61,6 @@
 
     }
 
-})();
+    window.LoadScript = LoadScript
+
+})(window);
