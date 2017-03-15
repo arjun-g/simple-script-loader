@@ -14,16 +14,27 @@
             return new Promise((resolve, reject) => {
                 this.loadConfig()
                 .then(config => {
-                    config.scripts.forEach(script => {
-                        this.downloadScript(script).then(() => {
-                            this.loadCount++
-                            if(loaded) loaded(this.loadCount, config.scripts.length)
-                            if(this.loadCount === config.scripts.length) resolve()
-                        })
+                    let scriptDoms = config.scripts.map(scriptConfig => {
+                        let script = document.createElement('script')
+                        let self = this
+                        script.onload = function(){
+                            if(loaded) loaded(++self.loadCount, config.scripts.length)
+                            if(self.loadCount ===  config.scripts.length) resolve()
+                        }
+                        script.onerror = function(){
+                            reject()
+                        }
+                        script.src = scriptConfig.path || scriptConfig
+                        script.async = !!scriptConfig.async
+                        return script
                     })
+                    let scriptContainer = document.createElement('DIV')
+                    scriptDoms.forEach(scriptDom => {
+                        scriptContainer.appendChild(scriptDom)
+                    })
+                    document.body.appendChild(scriptContainer)
                 })
             })
-            return 
         }
 
         loadConfig(){
@@ -41,22 +52,10 @@
                     if(this.status !== 200) return reject()
                     resolve(JSON.parse(this.response))
                 }
+                xhr.onerror = function(e){
+                    reject(e)
+                }
                 xhr.send()
-            })
-        }
-
-        downloadScript(scriptConfig){
-            return new Promise((resolve, reject) => {
-                let script = document.createElement('script')
-                script.onload = function(){
-                    resolve()
-                }
-                script.onerror = function(){
-                    reject()
-                }
-                script.src = scriptConfig.path || scriptConfig
-                script.async = !!scriptConfig.async
-                document.head.appendChild(script)
             })
         }
 
