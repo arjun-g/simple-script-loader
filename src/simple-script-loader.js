@@ -12,10 +12,10 @@
         load(){
             return new Promise((resolve, reject) => {
                 let loadCount = 0
-                loadConfig()
+                this.loadConfig()
                 .then(config => {
                     config.scripts.forEach(script => {
-                        downloadScript(script).then(() => {
+                        this.downloadScript(script).then(() => {
                             loadCount++
                             if(loadCount === config.scripts.length) resolve()
                         })
@@ -28,7 +28,7 @@
         loadConfig(){
             return new Promise((resolve, reject) => {
                 if(this.config) return resolve(this.config)
-                downloadJSON(this.configPath).then(resolve).catch(reject)
+                this.downloadJSON(this.configPath).then(resolve).catch(reject)
             })
         }
 
